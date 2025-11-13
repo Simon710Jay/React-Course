@@ -12,7 +12,6 @@ export default defineConfig({
       '/images': {
          target: 'http://localhost:3000'
       }
-
     }
   }
 })
