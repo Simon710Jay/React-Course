@@ -1,15 +1,21 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useState, useEffect, Fragment } from 'react';
-import { Header } from '../components/Header';
-import { formatMoney } from '../utils/money';
+import { Header } from '../../components/Header';
+import { formatMoney } from '../../utils/money';
+import { products } from '../../data/products';
 import './OrdersPage.css';
 
 export function OrdersPage({ cart }) {
     const [orders, setOrders] = useState([]);
 
+    // Helper function to get product info by id
+    function getProduct(productId) {
+        return products.find(p => p.id === productId);
+    }
+
     useEffect(() => { 
-        axios.get('/api/orders?expand=.products')
+        axios.get('/api/orders')
             .then((response) => {
                 setOrders(response.data);
             });
@@ -17,7 +23,6 @@ export function OrdersPage({ cart }) {
 
     return (
         <>
-
             <Header cart={cart} />
 
             <div className="orders-page">
@@ -34,6 +39,7 @@ export function OrdersPage({ cart }) {
                                             <div className="order-header-label">Order Placed:</div>
                                             <div>{dayjs(order.orderTimeMs).format('MMMM D')}</div>
                                         </div>
+
                                         <div className="order-total">
                                             <div className="order-header-label">Total:</div>
                                             <div>{formatMoney(order.totalCostCents)}</div>
@@ -44,26 +50,32 @@ export function OrdersPage({ cart }) {
                                         <div className="order-header-label">Order ID:</div>
                                         <div>{order.id}</div>
                                     </div>
-                                </div> 
+                                </div>
+
                                 <div className="order-details-grid">
                                     {order.products.map((orderProduct) => {
+                                        const product = getProduct(orderProduct.productId);
+                                        if (!product) return null;
+
                                         return (
-                                            <Fragment key={orderProduct.product.id}>
+                                            <Fragment key={product.id}>
                                                 <div className="product-image-container">
-                                                    <img src={orderProduct.product.image} />
+                                                    <img src={product.image} />
                                                 </div>
 
                                                 <div className="product-details">
                                                     <div className="product-name">
-                                                       {orderProduct.product.name}
+                                                        {product.name}
                                                     </div>
+
                                                     <div className="product-delivery-date">
-                                                        Arriving on: {dayjs(orderProduct.estimatedDeliveryTimeMs)
-                                                        .format('MMMM D')}
+                                                        Arriving on: {dayjs(orderProduct.estimatedDeliveryTimeMs).format('MMMM D')}
                                                     </div>
+
                                                     <div className="product-quantity">
                                                         Quantity: {orderProduct.quantity}
                                                     </div>
+
                                                     <button className="buy-again-button button-primary">
                                                         <img className="buy-again-icon" src="images/icons/buy-again.png" />
                                                         <span className="buy-again-message">Add to Cart</span>
@@ -81,6 +93,7 @@ export function OrdersPage({ cart }) {
                                         );
                                     })}
                                 </div>
+
                             </div>
                         );
                     })}
