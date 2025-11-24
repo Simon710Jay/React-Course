@@ -18,8 +18,6 @@ export function Product({ product, loadCart }) {
           setQuantity(quantitySelected);
         };
 
-        selectQuantity();
-
   return (
     <div className="product-container">
       <div className="product-image-container">

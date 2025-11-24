@@ -18,7 +18,7 @@ export function PaymentSummary({ paymentSummary }) {
           </div>
 
           <div className="payment-summary-row">
-            <div>Shipping &amp; handling:</div>
+            <div>Shipping &amp handling:</div>
             <div className="payment-summary-money">
               {formatMoney(paymentSummary.shippingCostCents)}
             </div>
