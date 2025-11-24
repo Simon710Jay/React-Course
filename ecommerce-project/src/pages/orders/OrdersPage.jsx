@@ -15,10 +15,12 @@ export function OrdersPage({ cart }) {
     }
 
     useEffect(() => { 
-        axios.get('/api/orders')
-            .then((response) => {
-                setOrders(response.data);
-            });
+        const fetchOrders = async () => {
+            const response = await axios.get('/api/orders');
+            setOrders(response.data);
+        };
+        
+        fetchOrders();
     }, []);
 
     return (
