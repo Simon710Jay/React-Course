@@ -19,9 +19,10 @@ export function OrderSummary({ cart, deliveryOptions, loadCart }) {
 
         const updateCartItem = async () => {
           await axios.put(`/api/cart-items/${cartItem.productId}`, {
-            quantity: cartItem.quantity
+            quantity: cartItem.quantity + 1
           });
           await loadCart();
+          console.log('Update clicked');
         };
 
         return (
@@ -49,7 +50,7 @@ export function OrderSummary({ cart, deliveryOptions, loadCart }) {
                     Quantity: <span className="quantity-label">{cartItem.quantity}</span>
                   </span>
                   <span className="update-quantity-link link-primary"
-                  onClick={updateCartItem}>
+                  onClick={updateCartItem} >
                     Update
                   </span>
                   <span className="delete-quantity-link link-primary" 

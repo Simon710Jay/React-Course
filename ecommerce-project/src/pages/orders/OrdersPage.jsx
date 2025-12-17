@@ -23,6 +23,10 @@ export function OrdersPage({ cart }) {
         fetchOrders();
     }, []);
 
+    const addToCart = async (productId) => {
+        await axios.post('/api/cart-items', { productId, quantity: 1 });
+        // Optionally, you might want to refresh the cart here
+    };
     return (
         <>
             <Header cart={cart} />
@@ -78,7 +82,8 @@ export function OrdersPage({ cart }) {
                                                         Quantity: {orderProduct.quantity}
                                                     </div>
 
-                                                    <button className="buy-again-button button-primary" >
+                                                    <button className="buy-again-button button-primary" 
+                                                    onClick={addToCart.bind(null, product.id)}>
                                                         <img className="buy-again-icon" src="images/icons/buy-again.png" />
                                                         <span className="buy-again-message">Add to Cart</span>
                                                     </button>
